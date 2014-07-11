@@ -1,5 +1,7 @@
 # UitDatabank class
 
+[![Build Status](https://travis-ci.org/tijsverkoyen/UitDatabank.svg?branch=master)](https://travis-ci.org/tijsverkoyen/UitDatabank)
+
 ## About
 
 PHP UitDatabank is a (wrapper)class to communicate with the
