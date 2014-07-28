@@ -1,6 +1,11 @@
 <?php
 namespace TijsVerkoyen\UitDatabank;
 
+use TijsVerkoyen\UitDatabank\Exception;
+use TijsVerkoyen\UitDatabank\OAuth\TwoLegged;
+use TijsVerkoyen\UitDatabank\Search\Filter;
+use TijsVerkoyen\UitDatabank\Search\Result;
+
 /**
  * UitDatabank class
  *
@@ -29,13 +34,6 @@ class UitDatabank
     private $server;
 
     /**
-     * The timeout
-     *
-     * @var int
-     */
-    private $timeOut = 10;
-
-    /**
      * The user agent
      *
      * @var string
@@ -43,11 +41,18 @@ class UitDatabank
     private $userAgent;
 
     /**
+     * The timeout
+     *
+     * @var int
+     */
+    private $timeout = 30;
+
+    /**
      * Constructor
      *
-     * @param string $key       The key to be used for authenticating
-     * @param string $secret    The secret to be used for authenticating
-     * @param string $server    The server to connect to
+     * @param string $key    The key to be used for authenticating
+     * @param string $secret The secret to be used for authenticating
+     * @param string $server The server to connect to
      */
     public function __construct($key, $secret, $server)
     {
@@ -103,7 +108,7 @@ class UitDatabank
      */
     protected function setServer($server)
     {
-        $this->server = $server;
+        $this->server = rtrim($server, '/');
     }
 
     /**
@@ -117,24 +122,19 @@ class UitDatabank
     }
 
     /**
-     * Set the timeout
-     * After this time the request will stop. You should handle any errors triggered by this.
-     *
-     * @param int $seconds The timeout in seconds.
+     * @param int $timeout
      */
-    public function setTimeOut($seconds)
+    public function setTimeout($timeout)
     {
-        $this->timeOut = (int) $seconds;
+        $this->timeout = $timeout;
     }
 
     /**
-     * Get the timeout that will be used
-     *
      * @return int
      */
-    public function getTimeOut()
+    public function getTimeout()
     {
-        return (int) $this->timeOut;
+        return $this->timeout;
     }
 
     /**
@@ -158,5 +158,95 @@ class UitDatabank
     public function setUserAgent($userAgent)
     {
         $this->userAgent = (string) $userAgent;
+    }
+
+    /**
+     * Make a call
+     *
+     * @param string     $url
+     * @param array|null $parameters
+     * @param string     $method
+     * @return mixed
+     */
+    protected function doCall($url, $parameters = null, $method = 'GET')
+    {
+        $oAuth = new TwoLegged(
+            $this->getKey(),
+            $this->getSecret()
+        );
+
+        foreach ($parameters as $key => $value) {
+            $oAuth->addParameter($key, $value);
+        }
+
+        $url = $this->getServer() . '/' . ltrim($url, '/');
+        $oAuth->setUrl($url);
+
+        $headers = array(
+            'Accept: application/json',
+            $oAuth->getAuthorizationHeader(),
+        );
+
+        $urlToCall = $url;
+        if ($method == 'GET') {
+            if (!empty($parameters)) {
+                $urlToCall .= '?' . http_build_query($parameters);
+            }
+        }
+
+        // set options
+        $options[CURLOPT_URL] = $urlToCall;
+        $options[CURLOPT_USERAGENT] = $this->getUserAgent();
+        if (ini_get('open_basedir') == '' && ini_get('safe_mode' == 'Off')) {
+            $options[CURLOPT_FOLLOWLOCATION] = true;
+        }
+        $options[CURLOPT_RETURNTRANSFER] = true;
+        $options[CURLOPT_TIMEOUT] = (int) $this->getTimeOut();
+        $options[CURLOPT_SSL_VERIFYPEER] = false;
+        $options[CURLOPT_SSL_VERIFYHOST] = false;
+        $options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
+        $options[CURLOPT_HTTPHEADER] = $headers;
+
+        // init
+        $curl = curl_init();
+
+        // set options
+        curl_setopt_array($curl, $options);
+
+        // execute
+        $response = curl_exec($curl);
+
+        // fetch errors
+        $errorNumber = curl_errno($curl);
+        $errorMessage = curl_error($curl);
+
+        if ($errorNumber != 0) {
+            throw new Exception($errorMessage, $errorNumber);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param $suffix
+     * @return string
+     */
+    protected function buildUrl($suffix)
+    {
+        return $this->getServer() . '/' . trim($suffix, '/');
+    }
+
+    /**
+//     * Search the database
+     *
+     * @param Filter $filter
+     * @return Result
+     */
+    public function search(Filter $filter)
+    {
+        $parameters = $filter->buildForRequest();
+        $json = json_decode($this->doCall('/searchv2/search', $parameters));
+
+        return Result::createFromJSON($json);
     }
 }
