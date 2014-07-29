@@ -15,6 +15,7 @@ $uitDatabank = new UitDatabank(
 try {
     $filter = new Filter();
     $filter->setQ('*:*');
+    $filter->setRows(500);
     $response = $uitDatabank->search($filter);
 
 } catch (Exception $e) {

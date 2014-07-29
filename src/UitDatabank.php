@@ -18,6 +18,8 @@ class UitDatabank
 {
     const VERSION = "2.0.0";
 
+    const DEBUG = true;
+
     /**
      * @var string
      */
@@ -183,7 +185,6 @@ class UitDatabank
         $oAuth->setUrl($url);
 
         $headers = array(
-            'Accept: application/json',
             $oAuth->getAuthorizationHeader(),
         );
 
@@ -237,7 +238,7 @@ class UitDatabank
     }
 
     /**
-//     * Search the database
+     * Search the database
      *
      * @param Filter $filter
      * @return Result
@@ -245,8 +246,18 @@ class UitDatabank
     public function search(Filter $filter)
     {
         $parameters = $filter->buildForRequest();
-        $json = json_decode($this->doCall('/searchv2/search', $parameters));
+        $response = $this->doCall('/searchv2/search', $parameters);
+        $xml = simplexml_load_string($response);
 
-        return Result::createFromJSON($json);
+        if ($xml !== false) {
+            $xml = $xml->children('http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL');
+            if (empty($xml)) {
+                throw new Exception('Invalid response.');
+            }
+        } else {
+            throw new Exception('Invalid response.');
+        }
+
+        return Result::createFromXML($xml);
     }
 }
