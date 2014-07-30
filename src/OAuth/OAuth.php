@@ -25,7 +25,7 @@ class OAuth
      * @param  array  $parameters The parameters.
      * @return string
      */
-    public static function calculateBaseString($url, $method, array $parameters)
+    public static function calculateBaseString($url, $method, array $parameters = null)
     {
         // redefine
         $url = (string) $url;
@@ -105,20 +105,24 @@ class OAuth
         // process queries
         foreach ($parameters as $key => $value) {
             $chunks[] = str_replace(
-                '%25', '%',
+                '%25',
+                '%',
                 self::urlencode_rfc3986($key) . '="' . self::urlencode_rfc3986($value) . '"'
             );
         }
 
         // build return
         $return = 'Authorization: OAuth realm="' . $parts['scheme'] . '://' .
-                  $parts['host'] . $parts['path'] . '", ';
+                  $parts['host'];
+        if (isset($parts['path'])) {
+            $return .= $parts['path'];
+        }
+        $return .= '", ';
         $return .= implode(',', $chunks);
 
         // prepend name and OAuth part
         return $return;
     }
-
 
     /**
      * Build the signature for the data
@@ -131,5 +135,4 @@ class OAuth
     {
         return base64_encode(hash_hmac('SHA1', $data, $key, true));
     }
-
 }

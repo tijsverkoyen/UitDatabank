@@ -32,9 +32,20 @@ class OAuthTest extends PHPUnit_Framework_TestCase
      */
     public function testCalculateBaseString()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->oAuth::calculateBaseString();
-//        $this->assertEquals('...', $var);
+        $var = oAuth::calculateBaseString(
+            'http://example.com',
+            'GET',
+            array(
+                'foo' => 'bar',
+            )
+        );
+        $this->assertEquals('GET&http%3A%2F%2Fexample.com&foo%3Dbar', $var);
+
+        $var = oAuth::calculateBaseString(
+            'http://example.com',
+            'GET'
+        );
+        $this->assertEquals('GET&http%3A%2F%2Fexample.com&', $var);
     }
 
     /**
@@ -42,9 +53,16 @@ class OAuthTest extends PHPUnit_Framework_TestCase
      */
     public function testCalculateHeader()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->oAuth::calculateHeader();
-//        $this->assertEquals('...', $var);
+        $var = oAuth::calculateHeader(
+            array(
+                'foo' => 'bar'
+            ),
+            'http://example.com'
+        );
+        $this->assertEquals(
+            'Authorization: OAuth realm="http://example.com", foo="bar"',
+            $var
+        );
     }
 
     /**
@@ -52,9 +70,7 @@ class OAuthTest extends PHPUnit_Framework_TestCase
      */
     public function testHmacsha1()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->oAuth::hmacsha1();
-//        $this->assertEquals('...', $var);
+        $var = oAuth::hmacsha1('key', 'data');
+        $this->assertEquals('EEFSxb/coHvGM+69RhmfAlXJ9J0=', $var);
     }
-
 }

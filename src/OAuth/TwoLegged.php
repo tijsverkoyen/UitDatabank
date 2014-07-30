@@ -297,7 +297,11 @@ class TwoLegged
         $header = 'Authorization: OAuth realm="';
 
         // append url without parameters
-        $header .= $parts['scheme'] . '://' . $parts['host'] . $parts['path'] . '"';
+        $header .= $parts['scheme'] . '://' . $parts['host'];
+        if (isset($parts['path'])) {
+            $header .= $parts['path'];
+        }
+        $header .= '"';
 
         // append OAuth parameters
         $oAuthParameters = $this->getOAuthParameters(true);
