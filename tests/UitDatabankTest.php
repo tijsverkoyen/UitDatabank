@@ -46,10 +46,20 @@ class UitDatabankTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($this->config['secret'], $this->uitDatabank->getSecret());
         $this->assertEquals($this->config['server'], $this->uitDatabank->getServer());
 
-        $this->uitDatabank->setTimeOut(5);
-        $this->assertEquals(5, $this->uitDatabank->getTimeOut());
+        $this->uitDatabank->setTimeout(42);
+        $this->assertEquals(42, $this->uitDatabank->getTimeout());
 
         $this->uitDatabank->setUserAgent('testing/1.0.0');
         $this->assertEquals('PHP UitDatabank/' . UitDatabank::VERSION . ' testing/1.0.0', $this->uitDatabank->getUserAgent());
+    }
+
+    /**
+     * Test UitDatabank->search
+     */
+    public function testSearch()
+    {
+        $this->markTestIncomplete('No test written yet.');
+//        $var = $this->uitDatabank->search();
+//        $this->assertEquals('...', $var);
     }
 }
