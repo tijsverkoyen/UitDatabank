@@ -29,7 +29,7 @@ class Organiser
      * Convert the raw XML into an object
      *
      * @param \SimpleXMLElement $xml
-     * @return Event
+     * @return Organiser
      */
     public static function createFromXML(\SimpleXMLElement $xml)
     {
