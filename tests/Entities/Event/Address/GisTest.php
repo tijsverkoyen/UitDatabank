@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Address\Gis;
 
 class GisTest extends PHPUnit_Framework_TestCase
@@ -44,9 +45,13 @@ class GisTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->gis::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventAddressGisData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Gis::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Address\Gis', $var);
+        $this->assertEquals($data['gis']['xcoordinate'], $var->getXCoordinate());
+        $this->assertEquals($data['gis']['ycoordinate'], $var->getYCoordinate());
+    }
 }
