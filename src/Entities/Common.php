@@ -15,7 +15,7 @@ class Common
      */
     public static function convertStringToBoolean($string)
     {
-        return in_array(strtolower($string), array('true', '1', 'T'));
+        return in_array(strtolower($string), array('true', '1', 't', 'y'));
     }
 
     /**
