@@ -35,41 +35,41 @@ class FilterTest extends PHPUnit_Framework_TestCase
         $this->filter->setD(42);
         $this->assertEquals(42, $this->filter->getD());
 
-        $this->filter->setDataType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->filter->getDataType());
+        $this->filter->setDataType('today');
+        $this->assertEquals('today', $this->filter->getDataType());
 
-        $this->filter->setFacetField("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->filter->getFacetField());
+        $this->filter->setFacetField('category');
+        $this->assertEquals('category', $this->filter->getFacetField());
 
-        $this->filter->setFq("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->filter->getFq());
+        $this->filter->setFq('city:Gent');
+        $this->assertEquals('city:Gent', $this->filter->getFq());
 
-        $this->filter->setGroup("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->filter->getGroup());
+        $this->filter->setGroup('event');
+        $this->assertEquals('event', $this->filter->getGroup());
 
         $this->filter->setPast(true);
         $this->assertEquals(true, $this->filter->getPast());
 
-//        $this->filter->setPt(/*array*/);
-//        $this->assertEquals(/*array*/, $this->filter->getPt());
+        $this->filter->setPt(51.036906, 3.720739);
+        $this->assertEquals(array('lat' => 51.036906, 'lng' => 3.720739), $this->filter->getPt());
 
-        $this->filter->setQ("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->filter->getQ());
+        $this->filter->setQ('concert');
+        $this->assertEquals('concert', $this->filter->getQ());
 
         $this->filter->setRows(42);
         $this->assertEquals(42, $this->filter->getRows());
 
-        $this->filter->setSfield("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->filter->getSfield());
+        $this->filter->setSfield('physical_gis');
+        $this->assertEquals('physical_gis', $this->filter->getSfield());
 
-        $this->filter->setSort("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->filter->getSort());
+        $this->filter->setSort('city+asc');
+        $this->assertEquals('city+asc', $this->filter->getSort());
 
         $this->filter->setStart(42);
         $this->assertEquals(42, $this->filter->getStart());
 
-        $this->filter->setTransform("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->filter->getTransform());
+        $this->filter->setTransform('list');
+        $this->assertEquals('list', $this->filter->getTransform());
     }
 
     /**
@@ -77,9 +77,9 @@ class FilterTest extends PHPUnit_Framework_TestCase
      */
     public function testBuildForRequest()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->filter->buildForRequest();
-//        $this->assertEquals('...', $var);
+        $this->filter->setQ('*:*');
+        $var = $this->filter->buildForRequest();
+        $this->assertArrayHasKey('q', $var);
+        $this->assertEquals('*:*', $var['q']);
     }
-
 }

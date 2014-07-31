@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event;
 
 class EventTest extends PHPUnit_Framework_TestCase
@@ -10,12 +11,18 @@ class EventTest extends PHPUnit_Framework_TestCase
     private $event;
 
     /**
+     * @var TestHelper
+     */
+    private $testHelper;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
         parent::setUp();
         $this->event = new Event();
+        $this->testHelper = new TestHelper();
     }
 
     /**
@@ -35,68 +42,89 @@ class EventTest extends PHPUnit_Framework_TestCase
         $this->event->setAgeFrom(42);
         $this->assertEquals(42, $this->event->getAgeFrom());
 
-//        $this->event->setActivities(/*array*/);
-//        $this->assertEquals(/*array*/, $this->event->getActivities());
+        $activities = array(
+            $this->testHelper->getEntitiesEventActivityObject(),
+        );
+        $this->event->setActivities($activities);
+        $this->assertEquals($activities, $this->event->getActivities());
 
-//        $this->event->setAvailableTo(/*\DateTime*/);
-//        $this->assertEquals(/*\DateTime*/, $this->event->getAvailableTo());
+        $dateTime = new \DateTime();
+        $this->event->setAvailableTo($dateTime);
+        $this->assertEquals($dateTime, $this->event->getAvailableTo());
 
-//        $this->event->setAvailableFrom(/*\DateTime*/);
-//        $this->assertEquals(/*\DateTime*/, $this->event->getAvailableFrom());
+        $dateTime = new \DateTime();
+        $this->event->setAvailableFrom($dateTime);
+        $this->assertEquals($dateTime, $this->event->getAvailableFrom());
 
-//        $this->event->setBookingPeriod(/*\TijsVerkoyen\UitDatabank\Entities\Period*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Period*/, $this->event->getBookingPeriod());
+        $period = $this->testHelper->getEntitiesEventCalendarPeriodObject();
+        $this->event->setBookingPeriod($period);
+        $this->assertEquals($period, $this->event->getBookingPeriod());
 
-//        $this->event->setCalendar(/*\TijsVerkoyen\UitDatabank\Entities\Event\Calendar*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\Calendar*/, $this->event->getCalendar());
+        $calendar = $this->testHelper->getEntitiesEventCalendarObject();
+        $this->event->setCalendar($calendar);
+        $this->assertEquals($calendar, $this->event->getCalendar());
 
-//        $this->event->setCategories(/*array*/);
-//        $this->assertEquals(/*array*/, $this->event->getCategories());
+        $categories = array(
+            $this->testHelper->getEntitiesEventCategoryObject(),
+        );
+        $this->event->setCategories($categories);
+        $this->assertEquals($categories, $this->event->getCategories());
 
-        $this->event->setCdbId("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->event->getCdbId());
+        $this->event->setCdbId('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->event->getCdbId());
 
-        $this->event->setComments("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->event->getComments());
+        $this->event->setComments('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->event->getComments());
 
-//        $this->event->setContactInfo(/*\TijsVerkoyen\UitDatabank\Entities\Event\ContactInfo*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\ContactInfo*/, $this->event->getContactInfo());
+        $contactInfo = $this->testHelper->getEntitiesEventContactInfoObject();
+        $this->event->setContactInfo($contactInfo);
+        $this->assertEquals($contactInfo, $this->event->getContactInfo());
 
-        $this->event->setCreatedBy("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->event->getCreatedBy());
+        $this->event->setCreatedBy('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->event->getCreatedBy());
 
-//        $this->event->setCreationDate(/*\DateTime*/);
-//        $this->assertEquals(/*\DateTime*/, $this->event->getCreationDate());
+        $dateTime = new \DateTime();
+        $this->event->setCreationDate($dateTime);
+        $this->assertEquals($dateTime, $this->event->getCreationDate());
 
-//        $this->event->setEventDetails(/*array*/);
-//        $this->assertEquals(/*array*/, $this->event->getEventDetails());
+        $eventDetails = array(
+            $this->testHelper->getEntitiesEventEventDetailObject(),
+        );
+        $this->event->setEventDetails($eventDetails);
+        $this->assertEquals($eventDetails, $this->event->getEventDetails());
 
-        $this->event->setExternalId("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->event->getExternalId());
+        $this->event->setExternalId('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->event->getExternalId());
 
         $this->event->setIsParent(true);
         $this->assertEquals(true, $this->event->getIsParent());
 
-        $this->event->setKeywords("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->event->getKeywords());
+        $this->event->setKeywords('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->event->getKeywords());
 
-//        $this->event->setLanguages(/*array*/);
-//        $this->assertEquals(/*array*/, $this->event->getLanguages());
+        $languages = array(
+            $this->testHelper->getEntitiesEventLanguageObject(),
+        );
+        $this->event->setLanguages($languages);
+        $this->assertEquals($languages, $this->event->getLanguages());
 
-//        $this->event->setLastUpdated(/*\DateTime*/);
-//        $this->assertEquals(/*\DateTime*/, $this->event->getLastUpdated());
+        $dateTime = new \DateTime();
+        $this->event->setLastUpdated($dateTime);
+        $this->assertEquals($dateTime, $this->event->getLastUpdated());
 
-        $this->event->setLastUpdatedBy("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->event->getLastUpdatedBy());
+        $this->event->setLastUpdatedBy('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->event->getLastUpdatedBy());
 
-//        $this->event->setLocation(/*\TijsVerkoyen\UitDatabank\Entities\Event\Location*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\Location*/, $this->event->getLocation());
+        $location = $this->testHelper->getEntitiesEventLocationObject();
+        $this->event->setLocation($location);
+        $this->assertEquals($location, $this->event->getLocation());
 
-//        $this->event->setOrganiser(/*\TijsVerkoyen\UitDatabank\Entities\Organiser*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Organiser*/, $this->event->getOrganiser());
+        $organiser = $this->testHelper->getEntitiesEventOrganiserObject();
+        $this->event->setOrganiser($organiser);
+        $this->assertEquals($organiser, $this->event->getOrganiser());
 
-        $this->event->setOwner("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->event->getOwner());
+        $this->event->setOwner('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->event->getOwner());
 
         $this->event->setPercentageComplete(42);
         $this->assertEquals(42, $this->event->getPercentageComplete());
@@ -107,11 +135,11 @@ class EventTest extends PHPUnit_Framework_TestCase
         $this->event->setPublished(true);
         $this->assertEquals(true, $this->event->getPublished());
 
-        $this->event->setValidator("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->event->getValidator());
+        $this->event->setValidator('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->event->getValidator());
 
-        $this->event->setWfStatus("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->event->getWfStatus());
+        $this->event->setWfStatus('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->event->getWfStatus());
     }
 
     /**
@@ -119,9 +147,10 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function testAddActivity()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->event->addActivity();
-//        $this->assertEquals('...', $var);
+        $activity = $this->testHelper->getEntitiesEventActivityObject();
+        $this->event->setActivities(array());
+        $this->event->addActivity($activity);
+        $this->assertEquals(array($activity), $this->event->getActivities());
     }
 
     /**
@@ -129,9 +158,10 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function testAddCategory()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->event->addCategory();
-//        $this->assertEquals('...', $var);
+        $category = $this->testHelper->getEntitiesEventCategoryObject();
+        $this->event->setCategories(array());
+        $this->event->addCategory($category);
+        $this->assertEquals(array($category), $this->event->getCategories());
     }
 
     /**
@@ -139,9 +169,10 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function testAddEventDetail()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->event->addEventDetail();
-//        $this->assertEquals('...', $var);
+        $eventDetail = $this->testHelper->getEntitiesEventEventDetailObject();
+        $this->event->setEventDetails(array());
+        $this->event->addEventDetail($eventDetail);
+        $this->assertEquals(array($eventDetail), $this->event->getEventDetails());
     }
 
     /**
@@ -149,9 +180,10 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function testAddLanguage()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->event->addLanguage();
-//        $this->assertEquals('...', $var);
+        $language = $this->testHelper->getEntitiesEventLanguageObject();
+        $this->event->setLanguages(array());
+        $this->event->addLanguage($language);
+        $this->assertEquals(array($language), $this->event->getLanguages());
     }
 
     /**
@@ -159,9 +191,10 @@ class EventTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->event::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $data = $this->testHelper->getEntitiesEventData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Event::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event', $var);
+    }
 }

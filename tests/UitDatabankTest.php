@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Search\Filter;
 use TijsVerkoyen\UitDatabank\UitDatabank;
 
 class UitDatabankTest extends PHPUnit_Framework_TestCase
@@ -50,7 +51,10 @@ class UitDatabankTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(42, $this->uitDatabank->getTimeout());
 
         $this->uitDatabank->setUserAgent('testing/1.0.0');
-        $this->assertEquals('PHP UitDatabank/' . UitDatabank::VERSION . ' testing/1.0.0', $this->uitDatabank->getUserAgent());
+        $this->assertEquals(
+            'PHP UitDatabank/' . UitDatabank::VERSION . ' testing/1.0.0',
+            $this->uitDatabank->getUserAgent()
+        );
     }
 
     /**
@@ -58,8 +62,10 @@ class UitDatabankTest extends PHPUnit_Framework_TestCase
      */
     public function testSearch()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->uitDatabank->search();
-//        $this->assertEquals('...', $var);
+        $filter = new Filter();
+        $filter->setQ('*:*');
+
+        $var = $this->uitDatabank->search($filter);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Search\Result', $var);
     }
 }

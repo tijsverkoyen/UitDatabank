@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Search\Result;
 
 class ResultTest extends PHPUnit_Framework_TestCase
@@ -10,12 +11,18 @@ class ResultTest extends PHPUnit_Framework_TestCase
     private $result;
 
     /**
+     * @var TestHelper
+     */
+    private $testHelper;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
         parent::setUp();
         $this->result = new Result();
+        $this->testHelper = new TestHelper();
     }
 
     /**
@@ -32,9 +39,6 @@ class ResultTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-//        $this->result->setEvents(/*array*/);
-//        $this->assertEquals(/*array*/, $this->result->getEvents());
-
         $this->result->setNumResults(42);
         $this->assertEquals(42, $this->result->getNumResults());
     }
@@ -44,19 +48,8 @@ class ResultTest extends PHPUnit_Framework_TestCase
      */
     public function testAddEvent()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->result->addEvent();
-//        $this->assertEquals('...', $var);
+        $event = $this->testHelper->getEntitiesEventObject();
+        $this->result->addEvent($event);
+        $this->assertEquals(array($event), $this->result->getEvents());
     }
-
-    /**
-     * Test Result::createFromXML
-     */
-    public function testCreateFromXML()
-    {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->result::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
-
 }

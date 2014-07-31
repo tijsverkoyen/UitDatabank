@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\EventDetail;
 
 class EventDetailTest extends PHPUnit_Framework_TestCase
@@ -10,12 +11,18 @@ class EventDetailTest extends PHPUnit_Framework_TestCase
     private $eventDetail;
 
     /**
+     * @var TestHelper
+     */
+    private $testHelper;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
         parent::setUp();
         $this->eventDetail = new EventDetail();
+        $this->testHelper = new TestHelper();
     }
 
     /**
@@ -32,29 +39,34 @@ class EventDetailTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->eventDetail->setCalendarSummary("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->eventDetail->getCalendarSummary());
+        $this->eventDetail->setCalendarSummary('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->eventDetail->getCalendarSummary());
 
-        $this->eventDetail->setLang("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->eventDetail->getLang());
+        $this->eventDetail->setLang('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->eventDetail->getLang());
 
-//        $this->eventDetail->setMedia(/*array*/);
-//        $this->assertEquals(/*array*/, $this->eventDetail->getMedia());
+        $media = $this->testHelper->getEntitiesEventEventDetailMediaObject();
+        $this->eventDetail->setMedia($media);
+        $this->assertEquals($media, $this->eventDetail->getMedia());
 
-//        $this->eventDetail->setPerformers(/*array*/);
-//        $this->assertEquals(/*array*/, $this->eventDetail->getPerformers());
+        $performers = array(
+            $this->testHelper->getEntitiesEventEventDetailPerformerObject(),
+        );
+        $this->eventDetail->setPerformers($performers);
+        $this->assertEquals($performers, $this->eventDetail->getPerformers());
 
-//        $this->eventDetail->setPrice(/*\TijsVerkoyen\UitDatabank\Entities\Event\EventDetail\Price*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\EventDetail\Price*/, $this->eventDetail->getPrice());
+        $price = $this->testHelper->getEntitiesEventEventDetailPriceObject();
+        $this->eventDetail->setPrice($price);
+        $this->assertEquals($price, $this->eventDetail->getPrice());
 
-        $this->eventDetail->setShortDescription("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->eventDetail->getShortDescription());
+        $this->eventDetail->setShortDescription('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->eventDetail->getShortDescription());
 
-//        $this->eventDetail->setLongDescription(/*mixed*/);
-//        $this->assertEquals(/*mixed*/, $this->eventDetail->getLongDescription());
+        $this->eventDetail->setLongDescription('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->eventDetail->getLongDescription());
 
-        $this->eventDetail->setTitle("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->eventDetail->getTitle());
+        $this->eventDetail->setTitle('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->eventDetail->getTitle());
     }
 
     /**
@@ -62,9 +74,10 @@ class EventDetailTest extends PHPUnit_Framework_TestCase
      */
     public function testAddMedia()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->eventDetail->addMedia();
-//        $this->assertEquals('...', $var);
+        $media = $this->testHelper->getEntitiesEventEventDetailMediaObject();
+        $this->eventDetail->setMedia(array());
+        $this->eventDetail->addMedia($media);
+        $this->assertEquals(array($media), $this->eventDetail->getMedia());
     }
 
     /**
@@ -72,9 +85,10 @@ class EventDetailTest extends PHPUnit_Framework_TestCase
      */
     public function testAddPerformer()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->eventDetail->addPerformer();
-//        $this->assertEquals('...', $var);
+        $performer = $this->testHelper->getEntitiesEventEventDetailPerformerObject();
+        $this->eventDetail->setPerformers(array());
+        $this->eventDetail->addPerformer($performer);
+        $this->assertEquals(array($performer), $this->eventDetail->getPerformers());
     }
 
     /**
@@ -82,9 +96,10 @@ class EventDetailTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->eventDetail::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $data = $this->testHelper->getEntitiesEventEventDetailData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = EventDetail::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\EventDetail', $var);
+    }
 }

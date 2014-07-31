@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Calendar;
 
 class CalendarTest extends PHPUnit_Framework_TestCase
@@ -10,12 +11,18 @@ class CalendarTest extends PHPUnit_Framework_TestCase
     private $calendar;
 
     /**
+     * @var TestHelper
+     */
+    private $testHelper;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
         parent::setUp();
         $this->calendar = new Calendar();
+        $this->testHelper = new TestHelper();
     }
 
     /**
@@ -32,14 +39,22 @@ class CalendarTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-//        $this->calendar->setPeriods(/*array*/);
-//        $this->assertEquals(/*array*/, $this->calendar->getPeriods());
+        $periods = array(
+            $this->testHelper->getEntitiesEventCalendarPeriodObject(),
+        );
 
-//        $this->calendar->setPermanentOpeningTimes(/*\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\Permanent*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\Permanent*/, $this->calendar->getPermanentOpeningTimes());
+        $this->calendar->setPeriods($periods);
+        $this->assertEquals($periods, $this->calendar->getPeriods());
 
-//        $this->calendar->setTimestamps(/*array*/);
-//        $this->assertEquals(/*array*/, $this->calendar->getTimestamps());
+        $permanent = $this->testHelper->getEntitiesEventCalendarPermanentObject();
+        $this->calendar->setPermanentOpeningTimes($permanent);
+        $this->assertEquals($permanent, $this->calendar->getPermanentOpeningTimes());
+
+        $timestamps = array(
+            $this->testHelper->getEntitiesEventCalendarTimestampObject(),
+        );
+        $this->calendar->setTimestamps($timestamps);
+        $this->assertEquals($timestamps, $this->calendar->getTimestamps());
     }
 
     /**
@@ -47,9 +62,10 @@ class CalendarTest extends PHPUnit_Framework_TestCase
      */
     public function testAddPeriod()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->calendar->addPeriod();
-//        $this->assertEquals('...', $var);
+        $period = $this->testHelper->getEntitiesEventCalendarPeriodObject();
+        $this->calendar->setPeriods(array());
+        $this->calendar->addPeriod($period);
+        $this->assertEquals(array($period), $this->calendar->getPeriods());
     }
 
     /**
@@ -57,9 +73,10 @@ class CalendarTest extends PHPUnit_Framework_TestCase
      */
     public function testAddTimestamp()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->calendar->addTimestamp();
-//        $this->assertEquals('...', $var);
+        $timestamp = $this->testHelper->getEntitiesEventCalendarTimestampObject();
+        $this->calendar->setTimestamps(array());
+        $this->calendar->addTimestamp($timestamp);
+        $this->assertEquals(array($timestamp), $this->calendar->getTimestamps());
     }
 
     /**
@@ -67,9 +84,10 @@ class CalendarTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->calendar::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $data = $this->testHelper->getEntitiesEventCalendarData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Calendar::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Calendar', $var);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\ContactInfo;
 
 class ContactInfoTest extends PHPUnit_Framework_TestCase
@@ -10,12 +11,18 @@ class ContactInfoTest extends PHPUnit_Framework_TestCase
     private $contactInfo;
 
     /**
+     * @var TestHelper
+     */
+    private $testHelper;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
         parent::setUp();
         $this->contactInfo = new ContactInfo();
+        $this->testHelper = new TestHelper();
     }
 
     /**
@@ -32,17 +39,25 @@ class ContactInfoTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-//        $this->contactInfo->setAddress(/*\TijsVerkoyen\UitDatabank\Entities\Event\Address*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\Address*/, $this->contactInfo->getAddress());
+        $address = $this->testHelper->getEntitiesEventAddressObject();
+        $this->contactInfo->setAddress($address);
+        $this->assertEquals($address, $this->contactInfo->getAddress());
 
-//        $this->contactInfo->setMail(/*\TijsVerkoyen\UitDatabank\Entities\Event\Mail*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\Mail*/, $this->contactInfo->getMail());
+        $mail = $this->testHelper->getEntitiesEventMailObject();
+        $this->contactInfo->setMail($mail);
+        $this->assertEquals($mail, $this->contactInfo->getMail());
 
-//        $this->contactInfo->setPhone(/*\TijsVerkoyen\UitDatabank\Entities\Event\Phone*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\Phone*/, $this->contactInfo->getPhone());
+        $phone = $this->testHelper->getEntitiesEventPhoneObject();
+        $this->contactInfo->setPhone($phone);
+        $this->assertEquals($phone, $this->contactInfo->getPhone());
 
-        $this->contactInfo->setUrl("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->contactInfo->getUrl());
+        $this->contactInfo->setUrl(
+            'http://www.west-vlaanderen.be/kwaliteit/Leefomgeving/raversijde/Pages/default.aspx'
+        );
+        $this->assertEquals(
+            'http://www.west-vlaanderen.be/kwaliteit/Leefomgeving/raversijde/Pages/default.aspx',
+            $this->contactInfo->getUrl()
+        );
     }
 
     /**
@@ -50,9 +65,10 @@ class ContactInfoTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->contactInfo::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $data = $this->testHelper->getEntitiesEventContactInfoData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = ContactInfo::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\ContactInfo', $var);
+    }
 }

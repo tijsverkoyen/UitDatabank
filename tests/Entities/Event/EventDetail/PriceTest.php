@@ -46,7 +46,7 @@ class PriceTest extends PHPUnit_Framework_TestCase
     public function testCreateFromXML()
     {
         $testHelper = new TestHelper();
-        $data = $testHelper->getEntitiesEventEventDetailPrice();
+        $data = $testHelper->getEntitiesEventEventDetailPriceData();
         $xml = TestHelper::createXMLFromArray($data);
 
         $var = Price::createFromXML($xml);
