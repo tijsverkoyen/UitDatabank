@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Mail;
 
 class MailTest extends PHPUnit_Framework_TestCase
@@ -32,11 +33,11 @@ class MailTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->mail->setType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->mail->getType());
+        $this->mail->setType('main');
+        $this->assertEquals('main', $this->mail->getType());
 
-        $this->mail->setValue("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->mail->getValue());
+        $this->mail->setValue('stadsmuseum@oostende.be');
+        $this->assertEquals('stadsmuseum@oostende.be', $this->mail->getValue());
     }
 
     /**
@@ -44,9 +45,12 @@ class MailTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->mail::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventMailData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Mail::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Mail', $var);
+        $this->assertEquals($data['mail']['value'], $var->getValue());
+    }
 }

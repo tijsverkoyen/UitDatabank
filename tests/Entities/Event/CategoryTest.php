@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Category;
 
 class CategoryTest extends PHPUnit_Framework_TestCase
@@ -32,14 +33,14 @@ class CategoryTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->category->setCatId("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->category->getCatId());
+        $this->category->setCatId('1.7.4.0.0');
+        $this->assertEquals('1.7.4.0.0', $this->category->getCatId());
 
-        $this->category->setName("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->category->getName());
+        $this->category->setName('Drama');
+        $this->assertEquals('Drama', $this->category->getName());
 
-        $this->category->setType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->category->getType());
+        $this->category->setType('theme');
+        $this->assertEquals('theme', $this->category->getType());
     }
 
     /**
@@ -47,9 +48,14 @@ class CategoryTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->category::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventCategoryData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Category::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Category', $var);
+        $this->assertEquals($data['category']['@attributes']['catid'], $var->getCatId());
+        $this->assertEquals($data['category']['@attributes']['type'], $var->getType());
+        $this->assertEquals($data['category']['value'], $var->getName());
+    }
 }

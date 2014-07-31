@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Activity;
 
 class ActivityTest extends PHPUnit_Framework_TestCase
@@ -35,8 +36,8 @@ class ActivityTest extends PHPUnit_Framework_TestCase
         $this->activity->setCount(42);
         $this->assertEquals(42, $this->activity->getCount());
 
-        $this->activity->setType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->activity->getType());
+        $this->activity->setType('like');
+        $this->assertEquals('like', $this->activity->getType());
     }
 
     /**
@@ -44,9 +45,13 @@ class ActivityTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->activity::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventActivityData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Activity::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Activity', $var);
+        $this->assertEquals($data['activity']['@attributes']['count'], $var->getCount());
+        $this->assertEquals($data['activity']['@attributes']['type'], $var->getType());
+    }
 }

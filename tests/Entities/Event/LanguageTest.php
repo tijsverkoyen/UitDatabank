@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Language;
 
 class LanguageTest extends PHPUnit_Framework_TestCase
@@ -32,11 +33,11 @@ class LanguageTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->language->setType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->language->getType());
+        $this->language->setType('spoken');
+        $this->assertEquals('spoken', $this->language->getType());
 
-        $this->language->setValue("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->language->getValue());
+        $this->language->setValue('Nederlands');
+        $this->assertEquals('Nederlands', $this->language->getValue());
     }
 
     /**
@@ -44,9 +45,14 @@ class LanguageTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->language::createFromXML();
-//        $this->assertEquals('...', $var);
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventLanguageData();
+        $xml = TestHelper::createXMLFromArray($data);
+
+        $var = Language::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Language', $var);
+        $this->assertEquals($data['language']['@attributes']['type'], $var->getType());
+        $this->assertEquals($data['language']['value'], $var->getValue());
     }
 
 }

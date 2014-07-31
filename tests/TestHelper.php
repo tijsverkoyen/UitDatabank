@@ -3,6 +3,7 @@
 namespace TijsVerkoyen\UitDatabank\Tests;
 
 use TijsVerkoyen\UitDatabank\Entities\Event\Address\Gis;
+use TijsVerkoyen\UitDatabank\Entities\Event\Address\Physical;
 use TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme\Monday;
 use TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme;
 
@@ -104,6 +105,17 @@ class TestHelper
                 'zipcode' => '8400',
             ),
         );
+    }
+
+    /**
+     * @return Physical
+     */
+    public function getEntitiesEventAddressPhysicalObject()
+    {
+        $data = $this->getEntitiesEventAddressPhysicalData();
+        $xml = TestHelper::createXMLFromArray($data);
+
+        return Physical::createFromXML($xml);
     }
 
     /**
@@ -359,6 +371,116 @@ class TestHelper
                     'cdbid' => '1d36a305-1e89-4cd2-97eb-bb8644bcc6af',
                 ),
                 'value' => 'CC de Grote Post',
+            ),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventActivityData()
+    {
+        return array(
+            'activity' => array(
+                '@attributes' => array(
+                    'count' => 0,
+                    'type' => 'like',
+                )
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventAddressData()
+    {
+        return array(
+            'address' => array(
+                'physical' => array(
+                    'city' => 'Oostende',
+                    'country' => 'BE',
+                    'gis' => array(
+                        'xcoordinate' => 2.849605,
+                        'ycoordinate' => 51.197985,
+                    ),
+                    'housenr' => '636',
+                    'street' => 'Nieuwpoortsesteenweg',
+                    'zipcode' => '8400',
+                ),
+            ),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventCategoryData()
+    {
+        return array(
+            'category' => array(
+                '@attributes' => array(
+                    'catid' => '1.7.4.0.0',
+                    'type' => 'theme',
+                ),
+                'value' => 'Drama',
+            ),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventLanguageData()
+    {
+        return array(
+            'language' => array(
+                '@attributes' => array(
+                    'type' => 'spoken',
+                ),
+                'value' => 'Nederlands',
+            ),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventMailData()
+    {
+        return array(
+            'mail' => array(
+                '@attributes' => array(
+                    'type' => 'main',
+                ),
+                'value' => 'stadsmuseum@oostende.be',
+            ),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventOrganiserData()
+    {
+        return array(
+            'organiser' => array(
+                'label' => 'Koninklijke Oostendse Heem- en Geschiedkundige Kring De Plate',
+            ),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventPhoneData()
+    {
+        return array(
+            'phone' => array(
+                '@attributes' => array(
+                    'type' => 'phone',
+                ),
+                'value' => '059 70 22 85',
             ),
         );
     }

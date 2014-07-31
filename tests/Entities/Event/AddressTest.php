@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Address;
 
 class AddressTest extends PHPUnit_Framework_TestCase
@@ -10,12 +11,18 @@ class AddressTest extends PHPUnit_Framework_TestCase
     private $address;
 
     /**
+     * @var TestHelper
+     */
+    private $testHelper;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
         parent::setUp();
         $this->address = new Address();
+        $this->testHelper = new TestHelper();
     }
 
     /**
@@ -32,8 +39,9 @@ class AddressTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-//        $this->address->setPhysical(/*\TijsVerkoyen\UitDatabank\Entities\Event\Address\Physical*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\Address\Physical*/, $this->address->getPhysical());
+        $physical = $this->testHelper->getEntitiesEventAddressPhysicalObject();
+        $this->address->setPhysical($physical);
+        $this->assertEquals($physical, $this->address->getPhysical());
     }
 
     /**
@@ -41,9 +49,10 @@ class AddressTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->address::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $data = $this->testHelper->getEntitiesEventAddressData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Address::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Address', $var);
+    }
 }

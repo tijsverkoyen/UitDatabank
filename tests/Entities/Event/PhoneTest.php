@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Phone;
 
 class PhoneTest extends PHPUnit_Framework_TestCase
@@ -32,11 +33,11 @@ class PhoneTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->phone->setType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->phone->getType());
+        $this->phone->setType('phone');
+        $this->assertEquals('phone', $this->phone->getType());
 
-        $this->phone->setValue("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->phone->getValue());
+        $this->phone->setValue('059 70 22 85');
+        $this->assertEquals('059 70 22 85', $this->phone->getValue());
     }
 
     /**
@@ -44,9 +45,13 @@ class PhoneTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->phone::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventPhoneData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Phone::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Phone', $var);
+        $this->assertEquals($data['phone']['@attributes']['type'], $var->getType());
+        $this->assertEquals($data['phone']['value'], $var->getValue());
+    }
 }

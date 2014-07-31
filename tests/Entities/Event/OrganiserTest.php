@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Organiser;
 
 class OrganiserTest extends PHPUnit_Framework_TestCase
@@ -32,8 +33,11 @@ class OrganiserTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->organiser->setLabel("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->organiser->getLabel());
+        $this->organiser->setLabel('Koninklijke Oostendse Heem- en Geschiedkundige Kring De Plate');
+        $this->assertEquals(
+            'Koninklijke Oostendse Heem- en Geschiedkundige Kring De Plate',
+            $this->organiser->getLabel()
+        );
     }
 
     /**
@@ -41,9 +45,12 @@ class OrganiserTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->organiser::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventOrganiserData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Organiser::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Organiser', $var);
+        $this->assertEquals($data['organiser']['label'], $var->getLabel());
+    }
 }

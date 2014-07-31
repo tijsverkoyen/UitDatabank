@@ -32,9 +32,14 @@ class CommonTest extends PHPUnit_Framework_TestCase
      */
     public function testConvertStringToBoolean()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->common::convertStringToBoolean();
-//        $this->assertEquals('...', $var);
+        $this->assertTrue(Common::convertStringToBoolean(1));
+        $this->assertTrue(Common::convertStringToBoolean('true'));
+        $this->assertTrue(Common::convertStringToBoolean('t'));
+
+        $this->assertFalse(Common::convertStringToBoolean(0));
+        $this->assertFalse(Common::convertStringToBoolean('false'));
+        $this->assertFalse(Common::convertStringToBoolean('f'));
+        $this->assertFalse(Common::convertStringToBoolean('qsdqs'));
     }
 
     /**
@@ -42,9 +47,15 @@ class CommonTest extends PHPUnit_Framework_TestCase
      */
     public function testConvertStringToTimestamp()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->common::convertStringToTimestamp();
-//        $this->assertEquals('...', $var);
-    }
+        $dateTime = new \DateTime();
+        $dateTime->setDate(1985, 06, 20);
+        $dateTime->setTime(13, 37, 0);
 
+        $this->assertEquals(
+            $dateTime,
+            Common::convertStringToTimestamp(
+                $dateTime->format('d/m/Y H:i:S')
+            )
+        );
+    }
 }
