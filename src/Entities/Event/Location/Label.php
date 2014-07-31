@@ -50,7 +50,7 @@ class Label
      * Convert the raw XML into an object
      *
      * @param \SimpleXMLElement $xml
-     * @return Gis
+     * @return Label
      */
     public static function createFromXML(\SimpleXMLElement $xml)
     {
