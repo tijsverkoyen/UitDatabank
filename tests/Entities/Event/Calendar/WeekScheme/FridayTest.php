@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme\Friday;
 
 class FridayTest extends PHPUnit_Framework_TestCase
@@ -32,18 +33,21 @@ class FridayTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->friday->setOpenType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->friday->getOpenType());
+        $this->friday->setOpenType('closed');
+        $this->assertEquals('closed', $this->friday->getOpenType());
     }
 
     /**
-     * Test Friday::createFromXML
+     * Test Day::createFromXML
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->friday::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventCalendarWeekSchemeDayData('friday');
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Friday::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme\Day', $var);
+        $this->assertEquals($data['friday']['@attributes']['opentype'], $var->getOpenType());
+    }
 }

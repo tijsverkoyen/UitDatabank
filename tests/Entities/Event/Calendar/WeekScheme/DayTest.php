@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme\Day;
 
 class DayTest extends PHPUnit_Framework_TestCase
@@ -32,8 +33,8 @@ class DayTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->day->setOpenType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->day->getOpenType());
+        $this->day->setOpenType('closed');
+        $this->assertEquals('closed', $this->day->getOpenType());
     }
 
     /**
@@ -41,9 +42,12 @@ class DayTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->day::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventCalendarWeekSchemeDayData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Day::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme\Day', $var);
+        $this->assertEquals($data['monday']['@attributes']['opentype'], $var->getOpenType());
+    }
 }

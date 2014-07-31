@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Calendar\Timestamp;
 
 class TimestampTest extends PHPUnit_Framework_TestCase
@@ -32,11 +33,13 @@ class TimestampTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-//        $this->timestamp->setTimeEnd(/*\DateTime*/);
-//        $this->assertEquals(/*\DateTime*/, $this->timestamp->getTimeEnd());
+        $dateTime = new \DateTime();
+        $this->timestamp->setTimeEnd($dateTime);
+        $this->assertEquals($dateTime, $this->timestamp->getTimeEnd());
 
-//        $this->timestamp->setTimeStart(/*\DateTime*/);
-//        $this->assertEquals(/*\DateTime*/, $this->timestamp->getTimeStart());
+        $dateTime = new \DateTime();
+        $this->timestamp->setTimeStart($dateTime);
+        $this->assertEquals($dateTime, $this->timestamp->getTimeStart());
     }
 
     /**
@@ -44,9 +47,19 @@ class TimestampTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->timestamp::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventCalendarTimestampData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Timestamp::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\Timestamp', $var);
+        $this->assertEquals(
+            new \DateTime($data['timestamp']['date'] . ' ' . $data['timestamp']['timeend']),
+            $var->getTimeEnd()
+        );
+        $this->assertEquals(
+            new \DateTime($data['timestamp']['date'] . ' ' . $data['timestamp']['timestart']),
+            $var->getTimeStart()
+        );
+    }
 }

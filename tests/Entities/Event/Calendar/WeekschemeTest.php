@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme;
 
 class WeekSchemeTest extends PHPUnit_Framework_TestCase
@@ -10,12 +11,18 @@ class WeekSchemeTest extends PHPUnit_Framework_TestCase
     private $weekScheme;
 
     /**
+     * @var TestHelper
+     */
+    private $testHelper;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
         parent::setUp();
         $this->weekScheme = new WeekScheme();
+        $this->testHelper = new TestHelper();
     }
 
     /**
@@ -32,8 +39,9 @@ class WeekSchemeTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-//        $this->weekScheme->setDays(/*array*/);
-//        $this->assertEquals(/*array*/, $this->weekScheme->getDays());
+        $day = $this->testHelper->getEntitiesEventCalendarWeekSchemeDayObject();
+        $this->weekScheme->setDays(array($day));
+        $this->assertEquals(array($day), $this->weekScheme->getDays());
     }
 
     /**
@@ -41,9 +49,10 @@ class WeekSchemeTest extends PHPUnit_Framework_TestCase
      */
     public function testAddDay()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->weekScheme->addDay();
-//        $this->assertEquals('...', $var);
+        $day = $this->testHelper->getEntitiesEventCalendarWeekSchemeDayObject();
+        $this->weekScheme->setDays(array());
+        $this->weekScheme->addDay($day);
+        $this->assertEquals(array($day), $this->weekScheme->getDays());
     }
 
     /**
@@ -51,9 +60,10 @@ class WeekSchemeTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->weekScheme::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $data = $this->testHelper->getEntitiesEventCalendarWeekSchemeData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = WeekScheme::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme', $var);
+    }
 }

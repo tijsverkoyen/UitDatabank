@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Calendar\Permanent;
 
 class PermanentTest extends PHPUnit_Framework_TestCase
@@ -10,12 +11,18 @@ class PermanentTest extends PHPUnit_Framework_TestCase
     private $permanent;
 
     /**
+     * @var TestHelper
+     */
+    private $testHelper;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
         parent::setUp();
         $this->permanent = new Permanent();
+        $this->testHelper = new TestHelper();
     }
 
     /**
@@ -32,8 +39,9 @@ class PermanentTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-//        $this->permanent->setWeekScheme(/*\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme*/, $this->permanent->getWeekScheme());
+        $weekScheme = $this->testHelper->getEntitiesEventCalendarWeekSchemeObject();
+        $this->permanent->setWeekScheme($weekScheme);
+        $this->assertEquals($weekScheme, $this->permanent->getWeekScheme());
     }
 
     /**
@@ -41,9 +49,10 @@ class PermanentTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->permanent::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $data = $this->testHelper->getEntitiesEventCalendarPermanentData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Permanent::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\Permanent', $var);
+    }
 }

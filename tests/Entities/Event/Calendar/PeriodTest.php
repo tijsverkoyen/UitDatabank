@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Calendar\Period;
 
 class PeriodTest extends PHPUnit_Framework_TestCase
@@ -10,12 +11,18 @@ class PeriodTest extends PHPUnit_Framework_TestCase
     private $period;
 
     /**
+     * @var TestHelper
+     */
+    private $testHelper;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
         parent::setUp();
         $this->period = new Period();
+        $this->testHelper = new TestHelper();
     }
 
     /**
@@ -32,14 +39,16 @@ class PeriodTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-//        $this->period->setWeekScheme(/*\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme*/);
-//        $this->assertEquals(/*\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\WeekScheme*/, $this->period->getWeekScheme());
+        $weekScheme = $this->testHelper->getEntitiesEventCalendarWeekSchemeObject();
+        $this->period->setWeekScheme($weekScheme);
+        $this->assertEquals($weekScheme, $this->period->getWeekScheme());
 
-//        $this->period->setDateFrom(/*\DateTime*/);
-//        $this->assertEquals(/*\DateTime*/, $this->period->getDateFrom());
+        $dateTime = new DateTime();
+        $this->period->setDateFrom($dateTime);
+        $this->assertEquals($dateTime, $this->period->getDateFrom());
 
-//        $this->period->setDateTo(/*\DateTime*/);
-//        $this->assertEquals(/*\DateTime*/, $this->period->getDateTo());
+        $this->period->setDateTo($dateTime);
+        $this->assertEquals($dateTime, $this->period->getDateTo());
     }
 
     /**
@@ -47,9 +56,10 @@ class PeriodTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->period::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $data = $this->testHelper->getEntitiesEventCalendarPeriodData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Period::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Calendar\Period', $var);
+    }
 }
