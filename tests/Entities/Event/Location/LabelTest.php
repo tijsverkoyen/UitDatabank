@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\Location\Label;
 
 class LabelTest extends PHPUnit_Framework_TestCase
@@ -32,11 +33,11 @@ class LabelTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->label->setCdbid("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->label->getCdbid());
+        $this->label->setCdbid('1d36a305-1e89-4cd2-97eb-bb8644bcc6af');
+        $this->assertEquals('1d36a305-1e89-4cd2-97eb-bb8644bcc6af', $this->label->getCdbid());
 
-        $this->label->setValue("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->label->getValue());
+        $this->label->setValue('CC de Grote Post');
+        $this->assertEquals('CC de Grote Post', $this->label->getValue());
     }
 
     /**
@@ -44,9 +45,13 @@ class LabelTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->label::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventLocationLabelData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Label::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\Location\Label', $var);
+        $this->assertEquals($data['label']['@attributes']['cdbid'], $var->getCdbid());
+        $this->assertEquals($data['label']['value'], $var->getValue());
+    }
 }

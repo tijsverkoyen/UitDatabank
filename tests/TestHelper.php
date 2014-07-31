@@ -347,4 +347,19 @@ class TestHelper
 
         );
     }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventLocationLabelData()
+    {
+        return array(
+            'label' => array(
+                '@attributes' => array(
+                    'cdbid' => '1d36a305-1e89-4cd2-97eb-bb8644bcc6af',
+                ),
+                'value' => 'CC de Grote Post',
+            ),
+        );
+    }
 }
