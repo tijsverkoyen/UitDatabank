@@ -54,7 +54,7 @@ class Location
      * Convert the raw XML into an object
      *
      * @param \SimpleXMLElement $xml
-     * @return Address
+     * @return Location
      */
     public static function createFromXML(\SimpleXMLElement $xml)
     {

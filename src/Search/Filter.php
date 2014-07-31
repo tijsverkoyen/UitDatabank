@@ -166,11 +166,15 @@ class Filter
     }
 
     /**
-     * @param array $pt
+     * @param float $lat
+     * @param float $lng
      */
-    public function setPt($pt)
+    public function setPt($lat, $lng)
     {
-        $this->pt = $pt;
+        $this->pt = array(
+            'lat' => $lat,
+            'lng' => $lng,
+        );
     }
 
     /**

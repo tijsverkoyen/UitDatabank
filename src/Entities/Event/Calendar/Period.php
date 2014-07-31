@@ -74,7 +74,7 @@ class Period
      * Convert the raw XML into an object
      *
      * @param \SimpleXMLElement $xml
-     * @return Permanent
+     * @return Period
      */
     public static function createFromXML(\SimpleXMLElement $xml)
     {
