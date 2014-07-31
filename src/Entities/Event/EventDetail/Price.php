@@ -53,7 +53,7 @@ class Price
      * Convert the raw XML into an object
      *
      * @param \SimpleXMLElement $xml
-     * @return Media
+     * @return Price
      */
     public static function createFromXML(\SimpleXMLElement $xml)
     {
