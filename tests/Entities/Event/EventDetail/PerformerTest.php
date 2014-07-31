@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\EventDetail\Performer;
 
 class PerformerTest extends PHPUnit_Framework_TestCase
@@ -32,11 +33,11 @@ class PerformerTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->performer->setLabel("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->performer->getLabel());
+        $this->performer->setLabel('Korneel De Rynck (historicus en auteur)');
+        $this->assertEquals('Korneel De Rynck (historicus en auteur)', $this->performer->getLabel());
 
-        $this->performer->setRole("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->performer->getRole());
+        $this->performer->setRole('begeleider');
+        $this->assertEquals('begeleider', $this->performer->getRole());
     }
 
     /**
@@ -44,9 +45,15 @@ class PerformerTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->performer::createFromXML();
-//        $this->assertEquals('...', $var);
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventEventDetailPerformerData();
+        $xml = TestHelper::createXMLFromArray($data);
+
+        $var = Performer::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\EventDetail\Performer', $var);
+        $this->assertEquals($data['performer']['label'], $var->getLabel());
+        $this->assertEquals($data['performer']['role'], $var->getRole());
+
     }
 
 }

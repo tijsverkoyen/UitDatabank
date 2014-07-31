@@ -299,4 +299,52 @@ class TestHelper
             ),
         );
     }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventEventDetailMediaData()
+    {
+        return array(
+            'file' => array(
+                '@attributes' => array(
+                    'creationdate' => '23/07/2014 15:11:47',
+                    'main' => "true",
+                ),
+                'copyright' => 'Open Monumentendag: Erfgoed vroeger, nu en in de toekomst',
+                'filename' => '4e6946f6-3b21-4ce9-b7fb-d554298767f1.jpg',
+                'filetype' => 'jpeg',
+                'hlink' => '//media.uitdatabank.be/20140723/4e6946f6-3b21-4ce9-b7fb-d554298767f1.jpg',
+                'mediatype' => 'photo',
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventEventDetailPerformerData()
+    {
+        return array(
+            'performer' => array(
+                'role' => 'begeleider',
+                'label' => 'Korneel De Rynck (historicus en auteur)',
+            ),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntitiesEventEventDetailPrice()
+    {
+        return array(
+            'price' => array(
+                'pricevalue' => 10.0,
+                'pricedescription' => 'ticketing inbegrepen
+                        korting  voor jongeren',
+            ),
+
+        );
+    }
 }

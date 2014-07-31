@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\EventDetail\Media;
 
 class MediaTest extends PHPUnit_Framework_TestCase
@@ -32,29 +33,30 @@ class MediaTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->media->setCopyright("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->media->getCopyright());
+        $this->media->setCopyright('Open Monumentendag: Erfgoed vroeger, nu en in de toekomst');
+        $this->assertEquals('Open Monumentendag: Erfgoed vroeger, nu en in de toekomst', $this->media->getCopyright());
 
-//        $this->media->setCreationDate(/*\DateTime*/);
-//        $this->assertEquals(/*\DateTime*/, $this->media->getCreationDate());
+        $dateTime = new \DateTime();
+        $this->media->setCreationDate($dateTime);
+        $this->assertEquals($dateTime, $this->media->getCreationDate());
 
-        $this->media->setFileName("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->media->getFileName());
+        $this->media->setFileName('4e6946f6-3b21-4ce9-b7fb-d554298767f1.jpg');
+        $this->assertEquals('4e6946f6-3b21-4ce9-b7fb-d554298767f1.jpg', $this->media->getFileName());
 
-        $this->media->setFileType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->media->getFileType());
+        $this->media->setFileType('jpeg');
+        $this->assertEquals('jpeg', $this->media->getFileType());
 
-        $this->media->setHLink("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->media->getHLink());
+        $this->media->setHLink('//media.uitdatabank.be/20140723/4e6946f6-3b21-4ce9-b7fb-d554298767f1.jpg');
+        $this->assertEquals('//media.uitdatabank.be/20140723/4e6946f6-3b21-4ce9-b7fb-d554298767f1.jpg', $this->media->getHLink());
 
         $this->media->setMain(true);
         $this->assertEquals(true, $this->media->getMain());
 
-        $this->media->setMediaType("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->media->getMediaType());
+        $this->media->setMediaType('photo');
+        $this->assertEquals('photo', $this->media->getMediaType());
 
-        $this->media->setPlainText("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->media->getPlainText());
+        $this->media->setPlainText('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->media->getPlainText());
     }
 
     /**
@@ -62,9 +64,17 @@ class MediaTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->media::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventEventDetailMediaData();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Media::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\EventDetail\Media', $var);
+        $this->assertEquals($data['file']['copyright'], $var->getCopyright());
+        $this->assertEquals($data['file']['filename'], $var->getFileName());
+        $this->assertEquals($data['file']['filetype'], $var->getFileType());
+        $this->assertEquals($data['file']['hlink'], $var->getHLink());
+        $this->assertEquals(($data['file']['@attributes']['main'] == 'true'), $var->getMain());
+        $this->assertEquals($data['file']['mediatype'], $var->getMediaType());
+    }
 }

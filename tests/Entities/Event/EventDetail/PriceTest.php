@@ -1,5 +1,6 @@
 <?php
 
+use TijsVerkoyen\UitDatabank\Tests\TestHelper;
 use TijsVerkoyen\UitDatabank\Entities\Event\EventDetail\Price;
 
 class PriceTest extends PHPUnit_Framework_TestCase
@@ -32,8 +33,8 @@ class PriceTest extends PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters()
     {
-        $this->price->setDescription("this is just a test string");
-        $this->assertEquals("this is just a test string", $this->price->getDescription());
+        $this->price->setDescription('this is just a test string');
+        $this->assertEquals('this is just a test string', $this->price->getDescription());
 
         $this->price->setValue(0.1337);
         $this->assertEquals(0.1337, $this->price->getValue());
@@ -44,9 +45,13 @@ class PriceTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateFromXML()
     {
-        $this->markTestIncomplete('No test written yet.');
-//        $var = $this->price::createFromXML();
-//        $this->assertEquals('...', $var);
-    }
+        $testHelper = new TestHelper();
+        $data = $testHelper->getEntitiesEventEventDetailPrice();
+        $xml = TestHelper::createXMLFromArray($data);
 
+        $var = Price::createFromXML($xml);
+        $this->assertInstanceOf('\TijsVerkoyen\UitDatabank\Entities\Event\EventDetail\Price', $var);
+        $this->assertEquals($data['price']['pricedescription'], $var->getDescription());
+        $this->assertEquals($data['price']['pricevalue'], $var->getValue());
+    }
 }
