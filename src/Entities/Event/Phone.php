@@ -55,9 +55,10 @@ class Phone
     public static function createFromXML(\SimpleXMLElement $xml)
     {
         $phone = new Phone();
+        $attributes = $xml->attributes();
 
-        if (isset($xml->attributes()['type'])) {
-            $phone->setType((string) $xml->attributes()['type']);
+        if (isset($attributes['type'])) {
+            $phone->setType((string) $attributes['type']);
         }
         $phone->setValue((string) $xml);
 
