@@ -55,9 +55,10 @@ class Label
     public static function createFromXML(\SimpleXMLElement $xml)
     {
         $label = new Label();
+        $attributes = $xml->attributes();
 
-        if (isset($xml->attributes()['cdbid'])) {
-            $label->setCdbid($xml->attributes()['cdbid']);
+        if (isset($attributes['cdbid'])) {
+            $label->setCdbid($attributes['cdbid']);
         }
 
         $label->setValue((string) $xml);

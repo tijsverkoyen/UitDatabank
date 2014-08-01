@@ -55,9 +55,10 @@ class Language
     public static function createFromXML(\SimpleXMLElement $xml)
     {
         $language = new Language();
+        $attributes = $xml->attributes();
 
-        if (isset($xml->attributes()['type'])) {
-            $language->setType((string) $xml->attributes()['type']);
+        if (isset($attributes['type'])) {
+            $language->setType((string)$attributes['type']);
         }
         $language->setValue((string) $xml);
 
