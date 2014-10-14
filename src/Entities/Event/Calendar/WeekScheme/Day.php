@@ -34,9 +34,10 @@ class Day
     public static function createFromXML(\SimpleXMLElement $xml)
     {
         $day = new Day();
+        $attributes = $xml->attributes();
 
-        if (isset($xml->attributes()['opentype'])) {
-            $day->setOpenType((string) $xml->attributes()['opentype']);
+        if (isset($attributes['opentype'])) {
+            $day->setOpenType((string) $attributes['opentype']);
         }
 
         return $day;
