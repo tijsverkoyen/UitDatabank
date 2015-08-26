@@ -18,7 +18,7 @@ class UitDatabank
 {
     const VERSION = "2.0.0";
 
-    const DEBUG = true;
+    const DEBUG = false;
 
     /**
      * @var string
